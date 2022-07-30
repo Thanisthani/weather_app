@@ -5,8 +5,8 @@ import Detail from './pages/Detail';
 function App() {
   return (
     <div className="App">
-      {/* <Dashboard /> */}
-      <Detail />
+      <Dashboard />
+      {/* <Detail /> */}
     </div>
   );
 }
