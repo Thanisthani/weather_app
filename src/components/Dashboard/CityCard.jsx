@@ -1,5 +1,5 @@
 import React from 'react'
-import cloud from '../assets/cloud2.png'
+import cloud from '../../assets/cloud2.png'
 import { BiNavigation} from "react-icons/bi";
 
 function CityCard() {

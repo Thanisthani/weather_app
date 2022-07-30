@@ -1,5 +1,5 @@
 import React from 'react'
-import CityCard from '../components/CityCard'
+import CityCard from '../components/Dashboard/CityCard'
 import Header from '../components/Dashboard/Header'
 
 function Dashboard() {
