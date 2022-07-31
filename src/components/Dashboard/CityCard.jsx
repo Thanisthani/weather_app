@@ -3,39 +3,52 @@ import cloud from "../../assets/cloud2.png";
 import { BiNavigation } from "react-icons/bi";
 import axios from "axios";
 import List from "../../api/cities.json";
+import date from 'date-and-time';
 
 function CityCard() {
-  const [newforecast, setForecast] = useState([]);
+    const [newforecast, setForecast] = useState([]);
     let cities = [];
-    const bgimg = ['blue-bg', 'brown-bg','green-bg', 'purple-bg', 'red-bg','blue-bg', 'brown-bg','green-bg', 'purple-bg', 'red-bg','blue-bg', 'brown-bg','green-bg', 'purple-bg', 'red-bg'];
-  
-// fetch city code
+    const bgimg = ['blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg', 'blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg', 'blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg'];
+    const now = new Date();
+    const [count, setCount] = useState(0);
+
+    // fetch city code
     
-    const getCity = () => {
-        cities = [];
-        List.List.map((city) => {
+    const getCity = async () => {
+        cities.length = 0;
+     await List.List.map((city) => {
             cities.push(city.CityCode);
-        });
+     });
+        
+     getForecast();
     };
 
     // fetch forcast
     const getForecast = () => {
         try {
+            console.log(cities);
             setForecast([]);
+            console.log("kmaruu");
             cities &&
-                cities.map(async (cityCode) => (
+                cities.map(async (cityCode, index) => (
+                 
                     await axios
                         .get(
                             `https://api.openweathermap.org/data/2.5/weather?id=${cityCode}&units=metric&appid=1fc7bb3360d9a0dc1ee6edf72b006c7c`
                         )
                         .then((res) => {
 
-                            setForecast(newforecast => [...newforecast, res.data]);
-                            console.log(res.data);
+                            if (index < 8) {
+                                setForecast(newforecast => [...newforecast, res.data]);
+                                console.log(cityCode.slice(0, 7)); 
+                            }
+                            
+                            
                         })
                         
                     
-                )); 
+                ));
+              
       
         } catch (error) {
             console.log(error);
@@ -46,11 +59,17 @@ function CityCard() {
   useEffect(() => {
     if (cities.length === 0) {
       getCity();
-    }
+      }
+     
   }, []);
 
   useEffect(() => {
-    getForecast();
+     
+      
+      setInterval(() => {
+          console.log("hello");
+          getForecast();
+      }, 300000);
   }, []); 
 
   return ( 
@@ -59,8 +78,9 @@ function CityCard() {
       {newforecast &&
               newforecast.map((item,index) => 
               (
+                //   ${bgimg[index]}
                   <div key={index} >
-                <div className={`bg-${bgimg[index]} w-96 h-40 bg-cover bg-center rounded-t-md sm:w-[340px]`}>
+                <div className={`bg-brown-bg w-96 h-40 bg-cover bg-center rounded-t-md sm:w-[340px]`}>
                     <div className='flex flex-row justify-end pr-6 pt-3'>
                     <div className='text-white text-sm ' >X</div>
                 </div>
@@ -68,8 +88,8 @@ function CityCard() {
                 <div className='  grid grid-cols-2 gap-y-4 px-5 pt-1 items-center pb-1 '>
  
                     <div>
-                                  {newforecast && <div className='text-white font-medium text-lg'>{item.name}, {item.sys.country }</div>}
-                        <div className='text-white text-xs'>9.19am, Feb 8</div>
+                                  {newforecast && <div className='text-white font-medium text-xl'>{item.name}, {item.sys.country }</div>}
+                                  <div className='text-white text-xs'>{date.format(now, 'hh:mm A')}, {date.format(now, 'MMM DD') }</div>
                     </div>
  
                               <div className='text-white font-medium text-4xl'>{ item.main.temp}<sup> 0</sup> C</div>
@@ -80,8 +100,8 @@ function CityCard() {
                     </div>
  
                     <div>
-                        <div className='text-white pl-3 text-xs'>Temp Min: { item.main.temp_min}<sup> 0</sup> C</div>
-                        <div className='text-white pl-3 text-xs'>Temp Max: { item.main.temp_max}<sup> 0</sup> C</div>
+                        <div className='text-white  text-xs'>Temp Min: { item.main.temp_min}<sup> 0</sup> C</div>
+                        <div className='text-white  text-xs'>Temp Max: { item.main.temp_max}<sup> 0</sup> C</div>
                     </div>
  
                     </div>
@@ -94,15 +114,15 @@ function CityCard() {
                     <div className='border-solid border-r-2 border-slate-500 flex justify-center flex-col pl-3 my-5' >
                         <div className='flex flex-row  pb-1'>
                             <div className='text-white text-xs font-medium'>Pressure: </div>
-                            <div className='text-white text-xs '>{ item.main.pressure} hPa</div>
+                            <div className='text-white text-xs '> { item.main.pressure} hPa</div>
                         </div>
                         <div className='flex flex-row pb-1'>
                             <div className='text-white text-xs font-medium'>Humidity: </div>
-                            <div className='text-white text-xs '>{ item.main.humidity}%</div>
+                            <div className='text-white text-xs '> { item.main.humidity}%</div>
                         </div>
                         <div className='flex flex-row pb-1'>
                             <div className='text-white text-xs font-medium'>Visibility: </div>
-                            <div className='text-white text-xs '>{ item.visibility/1000} km</div>
+                            <div className='text-white text-xs '> { item.visibility/1000} km</div>
                         </div>
  
                     </div>
