@@ -11,7 +11,7 @@ function Header() {
 
             </div>
         <div>
-            <input type="text" className='mt-5 bg-[#1f2128]  py-2 pl-2 rounded-l-lg ' placeholder="Enter a city" />
+            <input type="text" className='mt-5 bg-[#1f2128]  py-2 pl-5 w-64 rounded-l-lg ' placeholder="Enter a city" />
           <button className='text-white bg-[#6c5dd3] py-2 px-4 rounded-lg'>Add City</button>
         </div>
         

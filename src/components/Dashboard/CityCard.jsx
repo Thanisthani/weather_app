@@ -4,13 +4,14 @@ import { BiNavigation } from "react-icons/bi";
 import axios from "axios";
 import List from "../../api/cities.json";
 import date from 'date-and-time';
+import { Link } from 'react-router-dom';
 
 function CityCard() {
     const [newforecast, setForecast] = useState([]);
     let cities = [];
-    const bgimg = ['blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg', 'blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg', 'blue-bg', 'brown-bg', 'green-bg', 'purple-bg', 'red-bg'];
+    const bgimg = ['bg-blue-bg', 'bg-brown-bg', 'bg-green-bg', 'bg-purple-bg', 'bg-red-bg', 'bg-blue-bg', 'bg-brown-bg', 'bg-green-bg', 'bg-purple-bg', 'bg-red-bg', 'bg-blue-bg', 'bg-brown-bg', 'bg-green-bg', 'bg-purple-bg', 'bg-red-bg'];
     const now = new Date();
-    const [count, setCount] = useState(0);
+
 
     // fetch city code
     
@@ -28,7 +29,6 @@ function CityCard() {
         try {
             console.log(cities);
             setForecast([]);
-            console.log("kmaruu");
             cities &&
                 cities.map(async (cityCode, index) => (
                  
@@ -40,7 +40,7 @@ function CityCard() {
 
                             if (index < 8) {
                                 setForecast(newforecast => [...newforecast, res.data]);
-                                console.log(cityCode.slice(0, 7)); 
+                                console.log(res.data); 
                             }
                             
                             
@@ -80,16 +80,17 @@ function CityCard() {
               (
                 //   ${bgimg[index]}
                   <div key={index} >
-                <div className={`bg-brown-bg w-96 h-40 bg-cover bg-center rounded-t-md sm:w-[340px]`}>
+                      <Link to={`/detail/${item.id}/${index}`}>
+                <div className={`${bgimg[index]} w-96 h-40 bg-cover bg-center rounded-t-md sm:w-[340px]`}>
                     <div className='flex flex-row justify-end pr-6 pt-3'>
                     <div className='text-white text-sm ' >X</div>
                 </div>
  
                 <div className='  grid grid-cols-2 gap-y-4 px-5 pt-1 items-center pb-1 '>
  
-                    <div>
+                    <div className="flex flex-col items-center">
                                   {newforecast && <div className='text-white font-medium text-xl'>{item.name}, {item.sys.country }</div>}
-                                  <div className='text-white text-xs'>{date.format(now, 'hh:mm A')}, {date.format(now, 'MMM DD') }</div>
+                                  <div className='text-white text-[11px]'>{date.format(now, 'hh:mm A')}, {date.format(now, 'MMM DD') }</div>
                     </div>
  
                               <div className='text-white font-medium text-4xl'>{ item.main.temp}<sup> 0</sup> C</div>
@@ -148,7 +149,7 @@ function CityCard() {
                     </div>
  
                     </div>
- 
+                    </Link>
             </div>
           ) 
               )}

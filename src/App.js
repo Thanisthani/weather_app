@@ -13,7 +13,7 @@ function App() {
     <Router>
         <Routes>
           < Route path="/" exact element={<Dashboard />} />   
-          < Route path="/detail" exact element={<Detail />} />   
+          < Route path="/detail/:id/:index" exact element={<Detail />} />   
           
           
         </Routes>
